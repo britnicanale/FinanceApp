@@ -1,0 +1,59 @@
+{%extends "home.html"%} {%block body%}
+
+
+<form method="POST" action="/addincome/execute">
+  <h3> Add an Income Source</h3><br>
+  <div class="form-group row">
+    <label for="amount" class="col-sm-4 col-form-label">Amount</label>
+    <div class="col-sm-8">
+      <input type="number" step="0.01" class="form-control" id="amount" placeholder="0.00">
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="source" class="col-sm-4 col-form-label">Source</label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control" id="source" placeholder="Source">
+    </div>
+  </div>
+  <fieldset class="form-group">
+    <div class="row">
+      <legend class="col-form-label col-sm-4 pt-0">Frequency</legend>
+      <div class="col-sm-8">
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="type" id="temporary" value="temporary" checked>
+          <label class="form-check-label" for="temporary">
+            Temporary
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="type" id="continuous" value="continuous">
+          <label class="form-check-label" for="continuous">
+            Continuous
+          </label>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+  <div class="form-group row">
+    <label for="amount" class="col-sm-4 col-form-label">Frequency</label>
+    <div class="col-sm-8 row">
+      <div class="col-sm-6">
+        <input type="number" step="1" class="form-control" id="frequency" placeholder="0.00">
+      </div>
+      <div class="col-sm-4">
+        <select name="time">
+        <option value = "hour">Hours</option>
+        <option value = "day">Days</option>
+        <option value = "week">Weeks</option>
+        <option value = "month">Months</option>
+      </select>
+      </div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-sm-8">
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+  </div>
+</form>
+{%endblock%}

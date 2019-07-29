@@ -1,0 +1,63 @@
+{%extends "base.html"%}
+{% block body%}     
+<center>
+<h1>Create a Ledger account</h1>
+<h4>Start budgeting your finances today</h4>
+<br>
+
+<form class="needs-validation" action = "/register/execute" method = "POST" novalidate>
+ 
+    
+   
+    <div class="First col-sm-12 col-md-12 col-lg-12">
+      <input type="text" class="form-control" id="Email & Username" name = "first" placeholder="First name"  required>
+    </div>
+    
+  <br> <br>
+  
+   <div class="Last col-sm-12 col-md-12 col-lg-12">
+      <input type="text" class="form-control" id="Email & Username" name = "last" placeholder="Last name"  required>
+    </div>
+
+  
+    <br> <br>
+    
+     <div class="form-username col-sm-12 col-md-12 col-lg-12">
+      <input type="text" class="form-control" id="Username" name = "userName" placeholder="Username"  required>
+    </div>
+    <br> <br>
+    
+     <div class="form-username col-sm-12 col-md-12 col-lg-12">
+      <input type="text" class="form-control" id="Email" name= "email" placeholder="Email address"  required>
+    </div>
+    
+    <br> <br>
+
+  <div class="form-password col-sm-12 col-md-12 col-lg-12">
+    <input type="password" class="form-control" name= "password" id="Password" placeholder="Password">
+  </div>   
+  
+  <br> <br> 
+  
+  <div class="form-password col-sm-12 col-md-12 col-lg-12">
+    <input type="password" class="form-control" id="Confirm Password" placeholder="Confirm Password">
+  </div>
+ 
+ <br> <br>
+ <div class="well"> 
+      <div class="form-group">
+      <label>Date of Birth</label>
+      <input type="date" class="form-control" name = "dob"id="exampleInputDOB1" placeholder="Date of Birth">
+    </div>
+</div>
+
+<div class="well"> 
+</div>
+<br> <br>
+  <a href="/login">Do you already have an account? Login now!</a>
+  <br> <br>
+ <button type="submit" class="btn btn-primary">Sign up</button>
+</form>
+</center>
+
+{%endblock%}

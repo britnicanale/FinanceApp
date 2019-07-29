@@ -10,9 +10,15 @@
 
 <body>
     <div class="row">
+
+
         {%block nav%} {%endblock%}
-        <div id="body" class="col-lg-10 col-md-9 col-sm-8">
-            {%block body%} {%endblock%}
+        <div id="body" class="col-lg-10 col-md-9 col-sm-8 row">
+            {% with messages = get_flashed_messages() %} {% for message in messages %}
+            <div class="alert alert-warning" role="alert">
+                {{ message }}
+            </div>
+            {% endfor %} {% endwith %} {%block body%} {%endblock%}
         </div>
     </div>
     <div class="row">
@@ -22,6 +28,6 @@
     </div>
 
 </body>
-<script src = "static/index.js"></script>
+<script src="static/index.js"></script>
 
 </html>

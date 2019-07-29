@@ -1,13 +1,16 @@
-{%extends "base.html"%} {%block title%} Home 
+{%extends "base.html"%} {%block title%} Home {%endblock%}
 {%block nav%}
 <nav class="nav flex-column col-lg-2 col-md-3 col-sm-4 " id="nav">
             <a class="nav-link" id="nav-link" href="/"><b>FINANCE</b></a>
             <a class="nav-link" id="nav-link" href="/login">Login</a>
-            <a class="nav-link" id="nav-link" href="#">Link</a>
-            <a class="nav-link" id="nav-link" href="#">Link</a>
+            <a class="nav-link" id="nav-link" href="/register">Register</a>
+            <a class="nav-link" id="nav-link" href="/addincome">Add Income</a>
+            <a class="nav-link" id="nav-link" href="/addexpense">Add Expense</a>
         </nav>
 {%endblock%}
-{%endblock%} {%block body%}
+{%block body%}
+
+<h2 style = "text-align">Welcome {{uname}}! Here is your daily snapshot.</h2>
 <div class="col-xs-12 col-md-6">
     <div class="card text-center">
         You've spent
@@ -18,7 +21,7 @@
         <h3>$0</h3>
     </div>
 </div>
-<div class="col-xs-12 col-md-6" id = "my_dataviz">
+<div class="col-xs-12 col-md-6" id = "my_dataviz" onresize="makeChart()">
     
 </div>
 
