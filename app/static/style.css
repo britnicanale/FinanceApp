@@ -1,0 +1,27 @@
+/* Color for nav bar - #01394B- Navy blue  */
+/*Background color - White*/
+
+/*Nav text white*/
+
+/* Continuous income num - #328900 - Dark Green
+   Static income num - #45BC00   - Light Green
+   Continuos expenses num - #D30018 - Dark Red
+   Static expenses num - #F2213A - Light Red */
+
+
+#footer{
+    height:50px;
+    background-color: blue;
+    position:fixed;
+    width:100%;
+}
+
+#nav-link{
+    color:white
+}
+
+#nav{
+    background-color:#01394B;
+    padding:10
+    /*height:100%;*/
+}
