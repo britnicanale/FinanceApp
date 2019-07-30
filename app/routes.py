@@ -56,14 +56,17 @@ def home():
             return redirect(url_for("login"))
         un = request.form["uname"]                
         pw = request.form["pword"]
-        uncorrect = un == uname                   
-        pwcorrect = pw == pword
-        if uncorrect and pwcorrect:               
-            session["username"] = uname     
+        users = mongo.db.users
+        user = list(users.find({'userName' : un}))
+        print(users)
+        print(un)
+        print(pw)
+        if "userName" in user[0] and user[0]['password'] == pw:               
+            session["username"] = un
             return render_template("home.html", uname = un)
         flash("Your Credentials Are Incorrect")
-        return render_template("login.html")     
-    return render_template("home.html", uname = uname)
+        return redirect(url_for("login"))    
+    return render_template("home.html", uname = session['username'])
     
     """
     #flash("HELLO WHAT'S GOING ON")
@@ -75,6 +78,9 @@ def home():
     users = collection.find({})
     return render_template('home.html', users=users)
 """
+
+
+
 @app.route('/register/execute', methods=['GET', 'POST'])
 def registerexecute():
     if request.method == 'GET':
