@@ -1,0 +1,105 @@
+{%extends "home.html"%} {% block body%}
+
+<div class="col-12">
+  <h1 style="text-align:center">Items List</h1>
+
+  <br> <br>
+
+  <div style="text-align:center" class="row justify-content-around">
+    <div class="col-sm-12 col-md-6 col-lg-6">
+      <center>
+        <h3> Your Income</h3>
+      </center>
+      <table class="table table-hover table-dark">
+        <thead>
+          <tr>
+            <th scope="col">Source</th>
+            <th scope="col">Date</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Frequency</th>
+            <th scope="col">Remove?</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%for source in income%}
+          <tr>
+            <th scope="row">{{source['source']}}</th>
+            <td>{{source['date']}}</td>
+            <td>${{source['amount']}}</td>
+            {%if source['isContinuous']%}
+            <td>{{source['frequency']}} every {{source['timeperiod']}}</td>
+            {%else%}
+            <td> N/A </td>
+            {%endif%}
+            <td>
+              <form action="/delete" method="POST">
+                <input type="hidden" name="id" value={{source[ '_id']}}>
+                <!--<input type="hidden" name="item" value={{source[ 'item']}}> -->
+                <!--{%if source['isContinuous']%}-->
+                <!--  <input type="hidden" name="frequency" value={{source[ 'frequency']}}>-->
+                <!--  <input type="hidden" name="timeperiod" value={{source[ 'timeperiod']}}> -->
+                <!--  <input type="hidden" name="isContinuous" value={{source['isContinuous']}}>-->
+                <!--{%endif%}-->
+                <!--<input type="hidden" name="amount" value={{source[ 'amount']}}>-->
+                <input type = "hidden" name = "type" value = "income">
+                <button type="submit" class="btn btn-danger">Delete</button>
+              </form>
+            </td>
+          </tr>
+          {%endfor%}
+        </tbody>
+      </table>
+    </div>
+
+    <br> <br>
+
+    <div class="col-sm-12 col-md-6 col-lg-6">
+      <center>
+        <h3> Your Expenses</h3>
+      </center>
+      <table class="table table-hover table-dark">
+        <thead>
+          <tr>
+            <th scope="col">Item</th>
+            <th scope="col">Date</th>
+            <th scope="col">Cost</th>
+            <th scope="col">Frequency</th>
+            <th scope="col">Remove?</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%for expense in expenses%}
+          <tr>
+            <th scope="row">{{expense['item']}}</th>
+            <td>{{expense['date']}}</td>
+            <td>${{expense['amount']}}</td>
+            {%if expense['isContinuous']%}
+            <td>{{expense['frequency']}} every {{expense['timeperiod']}}</td>
+            {%else%}
+            <td> N/A </td>
+            {%endif%}
+            <td>
+              <form action="/delete" method="POST">
+                <input type="hidden" name="id" value={{expense[ '_id']}}>
+                <!--<input type="hidden" name="date" value={{expense[ 'date']}}>-->
+                <!--<input type="hidden" name="item" value={{expense[ 'item']}}> -->
+                <!--{%if expense['isContinuous']%}-->
+                <!--<input type="hidden" name="frequency" value={{expense[ 'frequency']}}>-->
+                <!--<input type="hidden" name="timeperiod" value={{expense[ 'timeperiod']}}> -->
+                <!--<input type="hidden" name="isContinuous" value={{expense['isContinuous']}}>-->
+                <!--{%endif%}-->
+                <!--<input type="hidden" name="amount" value={{expense[ 'amount']}}>-->
+                <input type = "hidden" name = "type" value = "expenses">
+                <button type="submit" class="btn btn-danger">Delete</button>
+              </form>
+            </td>
+          </tr>
+          {%endfor%}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+{%endblock%}

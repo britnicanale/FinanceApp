@@ -2,33 +2,53 @@
 {%block nav%}
 <nav class="nav flex-column col-lg-2 col-md-3 col-sm-4 " id="nav">
             
-            <a class="nav-link" id="nav-link" href="/"><b>FINANCE</b></a>
-            <a class="nav-link" id="nav-link" href="/account"><img height=25px src="static/account.png">Account</a>
+            <a class="nav-link" id="nav-link" href="/"><b>balance</b></a>
             <a class = "nav-link" id = "nav-link" href = "/logout">
             <form class = "nav-link" id = "nav-link" action = "/logout">
                 <button type="button" class="btn btn-light">Logout</button>
             </form>
             </a>
-            <a class="nav-link" id="nav-link" href="/login">Login</a>
-            <a class="nav-link" id="nav-link" href="/register">Register</a>
+            <a class="nav-link" id="nav-link" href="/account"><img height=25px src="static/account.png">Account</a>
             <a class="nav-link" id="nav-link" href="/addincome">Add Income</a>
             <a class="nav-link" id="nav-link" href="/addexpense">Add Expense</a>
+            <a class="nav-link" id="nav-link" href="/itemlist">Your Items List</a>
         </nav>
 {%endblock%}
 {%block body%}
-<h2 style = "text-align">Welcome {{first}}! Here is your daily snapshot.</h2>
+<h2 style = "text-align">Welcome {{first}}!</h2> 
+<br> <br>
+<h2>Here is your daily snapshot.</h2>
 <div class="col-xs-12 col-md-6 align-self-center">
     <div class="card text-center">
         You've spent
-        <h3>$10000</h3>
+        <h3>10000</h3>
         You've made
-        <h3>$10000</h3>
+        <h3>10000</h3>
         You have
         <h3>$0</h3>
     </div>
 </div>
-<div class="col-xs-12 col-md-6 align-self-center" id = "my_dataviz" onresize="makeChart()">
+
+<!--DONUT CHART-->
+
+<!--<div class="col-xs-12 col-md-6 align-self-center" id = "my_dataviz" onresize="makeChart()">-->
+
+
+<!--COOL FLOWY CHART-->
+
+<!--<div class = "col-xs-12 col-md-6 align-self-center">-->
+<!--    <svg id="fillgauge1" width="97%" height="200" onclick=""></svg>-->
+<!--    <svg id="fillgauge2" width="97%" height="200" onclick=""></svg>-->
+<!--    <svg id="fillgauge3" width="97%" height="200" onclick=""></svg>-->
+<!--</div>-->
+
+
+<!-- Cool FLowy thing PART 2 -->
+
+<div class = "col-xs-12 col-md-6 align-self-center">
+</div>
     
+    <svg id="fillgauge2" width="19%" height="200" onclick="gauge2.update(NewValue());"></svg>
 </div>
 
 {%endblock%}

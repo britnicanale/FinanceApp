@@ -6,13 +6,19 @@
   <div class="form-group row">
     <label for="amount" class="col-sm-4 col-form-label">Amount</label>
     <div class="col-sm-8">
-      <input type="number" step="0.01" class="form-control" id="amount" placeholder="0.00">
+      <input type="number" step="0.01" class="form-control" id="amount" name = "amount" placeholder="0.00">
     </div>
   </div>
   <div class="form-group row">
     <label for="Item" class="col-sm-4 col-form-label">Item</label>
     <div class="col-sm-8">
-      <input type="text" class="form-control" id="item" placeholder="Item">
+      <input type="text" class="form-control" id="item" name="item" placeholder="Item">
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="date" class="col-sm-4 col-form-label">Date</label>
+    <div class="col-sm-8">
+      <input type="date" class="form-control" name = "date" id="date">
     </div>
   </div>
   <fieldset class="form-group">
@@ -20,13 +26,13 @@
       <legend class="col-form-label col-sm-4 pt-0">Frequency</legend>
       <div class="col-sm-8">
         <div class="form-check">
-          <input class="form-check-input" type="radio" name="type" id="temporary" value="temporary" checked>
+          <input class="form-check-input" type="radio" name="isContinuous" id="temporary" value=False checked>
           <label class="form-check-label" for="temporary">
             Temporary
           </label>
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="radio" name="type" id="continuous" value="continuous">
+          <input class="form-check-input" type="radio" name="isContinuous" id="continuous" value=True>
           <label class="form-check-label" for="continuous">
             Continuous
           </label>
@@ -38,11 +44,10 @@
     <label for="amount" class="col-sm-4 col-form-label">Frequency</label>
     <div class="col-sm-8 row">
       <div class = "col-sm-6">
-      <input type="number" step="1" class="form-control" id="frequency" placeholder="0.00">
+      <input type="number" name = "frequency" step="1" class="form-control" id="frequency" placeholder="0.00">
     </div>
     <div class="col-sm-4">
-    <select name = "time">
-        <option value = "hour">Hours</option>
+    <select name = "timeperiod">
         <option value = "day">Days</option>
         <option value = "week">Weeks</option>
         <option value = "month">Months</option>
