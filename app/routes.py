@@ -13,7 +13,7 @@ app.secret_key = os.urandom(32)
 
 @app.route('/login', methods = ['POST', 'GET'])
 def login():
-    if "userName" in session:
+    if "username" in session:
         return redirect(url_for("home"))
     return render_template("login.html") 
     
@@ -44,22 +44,25 @@ def welcome():
 
 @app.route('/', methods  = ["POST", "GET"])
 def home():
+    users = mongo.db.users
     if "username"not in session:
         if "uname" not in request.form:
             return redirect(url_for("login"))
         un = request.form["uname"]                
         pw = request.form["pword"]
-        users = mongo.db.users
         user = list(users.find({'userName' : un}))
         print(users)
         print(un)
         print(pw)
         if "userName" in user[0] and user[0]['password'] == pw:               
             session["username"] = un
-            return render_template("home.html", uname = un)
+            first = user[0]['first']
+            return render_template("home.html", first = first)
         flash("Your Credentials Are Incorrect")
-        return redirect(url_for("login"))    
-    return render_template("home.html", uname = session['username'])
+        return redirect(url_for("login"))  
+    first = users.find({'userName': session['username']
+    })[0]['first']
+    return render_template("home.html", first = first)
     
     """
     #flash("HELLO WHAT'S GOING ON")
