@@ -1,24 +1,27 @@
-{%extends "base.html"%}
-{% block body%}     
-<center>
-<h1>Login to your Ledger Account</h1>
-<br>
-<form class="needs-validation" method = "POST" action = "/" novalidate>
-  <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-    <div class="form-username col-md-7 col-lg-7">
-      <input name="uname" type="text" class="form-control" id="username" placeholder="Username"  required>
-    </div>
-  <br> <br>
+{%extends "base.html"%} {% block body%}
+<div class="row justify-content-center" style = "width:100%">
+  <div class = "col-sm-12 col-md-8 col-lg-6">
   
-  <div class="form-password col-md-7 col-lg-7">
-    <input name = "pword" type="password" class="form-control" id="password" placeholder="Password">
-  </div>
- </div>
- <br> <br>
- <a href="/register">Do you have an account yet? Sign up today!</a>
- <br> <br> 
- <button type="submit" class="btn btn-primary">Login</button>
+  <h1 style = "text-align:center">Login to your Ledger Account</h1><br>
+  <!--<div class = "col">-->
+  <form class="needs-validation" method="POST" action="/" novalidate>
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+      <div class="form-username col">
+        <input name="uname" type="text" class="form-control" id="username" placeholder="Username" required>
+      </div>
+      <br> <br>
 
-</form>
-</center>
+      <div class="form-password col">
+        <input name="pword" type="password" class="form-control" id="password" placeholder="Password">
+      </div>
+    </div>
+    <br> <br>
+    <a href="/register">Do you have an account yet? Sign up today!</a>
+    <br> <br>
+    <button type="submit" class="btn btn-primary">Login</button>
+
+  </form>
+  <!--</div>-->
+  </div>
+</div>
 {%endblock%}

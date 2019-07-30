@@ -13,15 +13,8 @@ app.secret_key = os.urandom(32)
 
 @app.route('/login', methods = ['POST', 'GET'])
 def login():
-#    if "userName" not in session:
-#         un = request.form['username']
-#         pw = request.form['password']
-#         uncorrect = un == username                   
-#         pwcorrect = pw == password
-#         if uncorrect and pwcorrect:
-#           session['username'] = un
-#           return render_template("login.html", username = un)
-#         return render_template("error.html")
+    if "userName" in session:
+        return redirect(url_for("home"))
     return render_template("login.html") 
     
     
@@ -104,6 +97,8 @@ def registerexecute():
        
 @app.route("/register", methods=["GET", "POST"])
 def register():
+    if "username" in session:
+        return redirect(url_for("home"))
     return render_template('register.html')
 
 app.config['MONGO_DBNAME'] = 'income' 
