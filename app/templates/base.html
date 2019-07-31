@@ -1,5 +1,4 @@
 <html>
-
 <head>
     <title>{%block title%}{%endblock%}</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -14,20 +13,16 @@
 
         {%block nav%} {%endblock%}
 
-        <div id="main" class="col row">
+        <div id="main" class="col row"  style = "width:100%">
             {% with messages = get_flashed_messages() %} {% for message in messages %}
             <div class="alert alert-warning" role="alert">
                 {{ message }}
             </div>
-            {% endfor %} {% endwith %} {%block body%} {%endblock%}
+            {% endfor %} 
+            {% endwith %} 
+            {%block body%} {%endblock%}
         </div>
     </div>
-    <div class="row">
-        <footer id="footer">
-            Hello
-        </footer>
-    </div>
-
 </body>
 <!--<script src="static/index.js"></script>-->
 

@@ -1,3 +1,4 @@
+"""
 from flask_pymongo import PyMongo
 #from app import app
 import pymongo
@@ -22,7 +23,21 @@ def weekly(username):
     return data
 print(weekly('bubbly_britni'))
 
-
-    
-    
-    
+"""
+def incomecalculate(amount,frequency, timeperiod, isContinuous):
+    income = 0.0
+    if isContinuous == 'True':
+        if timeperiod == 'day':
+            income += amount * float(365/frequency)
+        elif timeperiod == 'week':
+            income += amount * float(52/frequency)
+        elif timeperiod == 'month':
+            income += amount * float(12/frequency)
+    else:
+        income += amount
+    print (income)
+    #return str(income)
+    return income 
+        
+        
+        

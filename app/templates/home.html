@@ -1,116 +1,277 @@
-{%extends "base.html"%} {%block title%} Home {%endblock%}
-{%block nav%}
+{%extends "base.html"%} {%block title%} Home {%endblock%} {%block nav%}
 <nav class="nav flex-column col-lg-2 col-md-3 col-sm-4 " id="nav">
-            
-            <a class="nav-link" id="nav-link" href="/"><img width=100% src='static/balance.png'></a>
-            <a class = "nav-link" id = "nav-link" href = "/logout">
-            <form class = "nav-link" id = "nav-link" action = "/logout">
-                <button type="button" class="btn btn-light">Logout</button>
-            </form>
-            </a>
-            <a class="nav-link" id="nav-link" href="/account"><img height=25px src="static/account.png">Account</a>
-            <a class="nav-link" id="nav-link" href="/addincome">Add Income</a>
-            <a class="nav-link" id="nav-link" href="/addexpense">Add Expense</a>
-            <a class="nav-link" id="nav-link" href="/itemlist">Your Items List</a>
-        </nav>
-{%endblock%}
-{%block body%}
-<h2 style = "text-align">Welcome {{first}}!</h2> 
-<br> <br>
-<h2>Here is your daily snapshot.</h2>
-<div class="col-xs-12 col-md-6 align-self-center">
-    <div class="card text-center">
-        You've spent
-        <h3>10000</h3>
-        You've made
-        <h3>10000</h3>
-        You have
-        <h3>$0</h3>
-    </div>
+	<div class="row" style="height:100%">
+		<div class="col">
+			<a class="nav-link" id="nav-link" href="/"><img width=100% src='static/balance.png'></a>
+			<a class="nav-link" id="nav-link" href="/logout">
+				<form class="nav-link" id="nav-link" action="/logout">
+					<button type="button" class="btn btn-light">Logout</button>
+				</form>
+			</a>
+			<a class="nav-link" id="nav-link" href="/account"><img height=25px src="static/account.png">Account</a>
+			<a class="nav-link" id="nav-link" href="/addincome">Add Income</a>
+			<a class="nav-link" id="nav-link" href="/addexpense">Add Expense</a>
+			<a class="nav-link" id="nav-link" href="/itemlist">Your Ledger</a>
+		</div>
+		<div class=" col align-self-end" style="margin-top:80px ; margin-left:15px">
+			<p style="color:white"><small>Copyright &copy<br> Britni Canale, <br>Peter Novello, <br>Josiah El Bey <br>2019</small></p>
+		</div>
+	</div>
+</nav>
+{%endblock%} {%block body%}
+<div class="row justify-content-center" style="width:100%">
+	<h2 style="text-align:center">Welcome {{first}}! Here is your daily snapshot.</h2>
 </div>
+<div class="row justify-content-center" style="width:100%">
+	<div class="col-xs-12 col-md-7 align-self-center" style="padding:50px">
+		<div class="card text-center">
+			<div class="card-header" style="background-color: #01394B">
+				<h3 style="color:white">Summary</h3>
+			</div>
+			<div class="card-body">
+				You've made
+				<h3>$ <b id = "income">10000</b></h3>
+				You've spent
+				<h3>$<b id = "expense">10000</b></h3>
+				You have
+				<h3>$<b id = "save">0</b></h3>
+			</div>
+			<div class="card-footer">
+				<a class="nav-link" id="nav-link" href="/itemlist" style="color:blue">Take a look at all of your income and expenses!</a>
+			</div>
+		</div>
+	</div>
 
-<!--DONUT CHART-->
 
-<!--<div class="col-xs-12 col-md-6 align-self-center" id = "my_dataviz" onresize="makeChart()">-->
+	<div class="col-xs-12 col-md-7 align-self-center">
+		<div class="card text-center"style="width:120%;">
+			<div class="card-header" style="background-color: #01394B">
+				<h3 style="color:white">Financial Tracker</h3>
+			</div>
+			<div class="card-body" id="power-gauge">
+				Here is your current status.
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	var gauge = function(container, configuration) {
+		var that = {};
+		var config = {
+			size: 710,
+			clipWidth: 200,
+			clipHeight: 110,
+			ringInset: 20,
+			ringWidth: 20,
 
+			pointerWidth: 10,
+			pointerTailLength: 5,
+			pointerHeadLengthPercent: 0.9,
 
-<!--COOL FLOWY CHART-->
+			minValue: -100,
+			maxValue: 100,
 
-<!--<div class = "col-xs-12 col-md-6 align-self-center">-->
-<!--    <svg id="fillgauge1" width="97%" height="200" onclick=""></svg>-->
-<!--    <svg id="fillgauge2" width="97%" height="200" onclick=""></svg>-->
-<!--    <svg id="fillgauge3" width="97%" height="200" onclick=""></svg>-->
-<!--</div>-->
+			minAngle: -90,
+			maxAngle: 90,
 
+			transitionMs: 750,
 
-<!-- Cool FLowy thing PART 2 -->
+			majorTicks: 10,
+			labelFormat: d3.format('d'),
+			labelInset: 10,
 
-<!--<div class = "col-xs-12 col-md-6 align-self-center">-->
-<!--</div>-->
-    
-<!--    <svg id="fillgauge2" width="19%" height="200" onclick="gauge2.update(NewValue());"></svg>-->
-<!--</div>-->
-<div class = "col-xs-12 col-md-6 align-self-center">
-<svg></svg>
-    <script>
-      var data = [100,-100];
-      var leftMargin = 50;  // Space to the left of first bar; accomodates y-axis labels
-      var rightMargin = 10; // Space to the right of last bar
-      var margin = {left: leftMargin, right: rightMargin, top: 10, bottom: 10};
-      var barWidth = 60;  // Width of the bars
-      var chartHeight = Math.abs(d3.min(data)) + Math.abs(d3.max(data));  // Height of chart, from x-axis (ie. y=0)
-      var chartWidth = margin.left + data.length * barWidth + margin.right;
+			arcColorFn: d3.interpolateHsl(d3.rgb('#8b0000'), d3.rgb('#32CD32'))
+		};
+		var range = undefined;
+		var r = undefined;
+		var pointerHeadLength = undefined;
+		var value = 0;
 
-      /* This scale produces negative output for negatve input */
-      var yScale = d3.scaleLinear()
-                     .domain([0, d3.max(data)])
-                     .range([0, chartHeight]);
-        console.log(yScale())
+		var svg = undefined;
+		var arc = undefined;
+		var scale = undefined;
+		var ticks = undefined;
+		var tickData = undefined;
+		var pointer = undefined;
 
-      /*
-       * We need a different scale for drawing the y-axis. It needs
-       * a reversed range, and a larger domain to accomodate negaive values.
-       */
-      var yAxisScale = d3.scaleLinear()
-                         .domain([d3.min(data) - 10, d3.max(data) + 10])
-                         .range([chartHeight - yScale(d3.min(data)), 0 ]);
+		var donut = d3.pie();
 
-      var svg = d3.select('svg');
-      svg
-          .attr('height', chartHeight + 100)
-          .attr('width', chartWidth);
+		function deg2rad(deg) {
+			return deg * Math.PI / 180;
+		}
 
-      svg
-        .selectAll("rect")
-        .data(data)
-        .enter()
-        .append("rect")
-          .attr("x", function(d, i) { return margin.left + i * barWidth; })
-          .attr("y", function(d, i) { return chartHeight - Math.max(0, yScale(d));})
-          .attr("height", function(d) { return Math.abs(yScale(d)); })
-          .attr("width", barWidth)
-          .style("fill", "#01394B")
-		  .style("stroke", "#01394B")
-		  .style("stroke-width", "1px")
-		  .style("opacity", function(d, i) { return 1 /*- (i * (1/data.length)); */});
+		function newAngle(d) {
+			var ratio = scale(d);
+			var newAngle = config.minAngle + (ratio * range);
+			return newAngle;
+		}
 
-      var yAxis = d3.axisLeft(yAxisScale);
-      
-      svg.append('g')
-        .attr('transform', function(d) {
-          return 'translate(' + margin.left + ', 0)';
-        })
-        .call(yAxis);
+		function configure(configuration) {
+			var prop = undefined;
+			for (prop in configuration) {
+				config[prop] = configuration[prop];
+			}
 
-      /*
-      var xScale = d3.scaleLinear()
-                      .domain(0, data.length * barWidth)
-                      .range(0, chartWidth);
+			range = config.maxAngle - config.minAngle;
+			r = config.size / 2;
+			pointerHeadLength = Math.round(r * config.pointerHeadLengthPercent);
 
-      var xAxis = d3.axisBottom();
-      */
-      
-    </script>
-    </div>
+			// a linear scale that maps domain values to a percent from 0..1
+			scale = d3.scaleLinear()
+				.range([0, 1])
+				.domain([config.minValue, config.maxValue]);
+
+			ticks = scale.ticks(config.majorTicks);
+			console.log(ticks)
+			tickData = d3.range(config.majorTicks).map(function() { return 1 / config.majorTicks; });
+
+			arc = d3.arc()
+				.innerRadius(r - config.ringWidth - config.ringInset)
+				.outerRadius(r - config.ringInset)
+				.startAngle(function(d, i) {
+					var ratio = d * i;
+					return deg2rad(config.minAngle + (ratio * range));
+				})
+				.endAngle(function(d, i) {
+					var ratio = d * (i + 1);
+					return deg2rad(config.minAngle + (ratio * range));
+				});
+		}
+		that.configure = configure;
+
+		function centerTranslation() {
+			return 'translate(' + r + ',' + r + ')';
+		}
+
+		function isRendered() {
+			return (svg !== undefined);
+		}
+		that.isRendered = isRendered;
+
+		function render(newValue) {
+			svg = d3.select(container)
+				.append('svg:svg')
+				.attr('class', 'gauge')
+				.attr('width', config.clipWidth)
+				.attr('height', config.clipHeight);
+
+			var centerTx = centerTranslation();
+
+			var arcs = svg.append('g')
+				.attr('class', 'arc')
+				.attr('transform', centerTx);
+
+			arcs.selectAll('path')
+				.data(tickData)
+				.enter().append('path')
+				.attr('fill', function(d, i) {
+					return config.arcColorFn(d * i);
+				})
+				.attr('d', arc);
+
+			var lg = svg.append('g')
+				.attr('class', 'label')
+				.attr('transform', centerTx);
+			lg.selectAll('text')
+				.data(ticks)
+				.enter().append('text')
+				.attr('transform', function(d) {
+					var ratio = scale(d);
+					var newAngle = config.minAngle + (ratio * range);
+					return 'rotate(' + newAngle + ') translate(0,' + (config.labelInset - r) + ')';
+				})
+				.text(config.labelFormat);
+				var labels = d3.selectAll("text")['_groups'][0]
+				console.log(labels)
+				console.log("WHAT:S UP")
+				for(i = 0; i < labels.length; i++){
+					if(labels[i].innerHTML.charAt(0) == "-"){
+						labels[i].innerHTML = "-$" + labels[i].innerHTML.substring(1,labels[i].innerHTML.length)
+					}else{
+						labels[i].innerHTML = "$" + labels[i].innerHTML
+					}
+				}
+
+			var lineData = [
+				[config.pointerWidth / 2, 0],
+				[0, -pointerHeadLength],
+				[-(config.pointerWidth / 2), 0],
+				[0, config.pointerTailLength],
+				[config.pointerWidth / 2, 0]
+			];
+			var pointerLine = d3.line().curve(d3.curveLinear)
+			var pg = svg.append('g').data([lineData])
+				.attr('class', 'pointer')
+				.attr('transform', centerTx);
+
+			pointer = pg.append('path')
+				.attr('d', pointerLine /*function(d) { return pointerLine(d) +'Z';}*/ )
+				.attr('transform', 'rotate(' + 0 + ')');
+
+			update(newValue === undefined ? 0 : newValue);
+		}
+		that.render = render;
+
+		function update(newValue, newConfiguration) {
+			if (newConfiguration !== undefined) {
+				configure(newConfiguration);
+			}
+			var ratio = scale(newValue);
+			var newAngle = config.minAngle + (ratio * range);
+			// pointer.transition()
+			// 	.duration(config.transitionMs)
+			// 	.ease(d3.easeElastic)
+			// 	.attr('transform', 'rotate(' +newAngle +')');
+		}
+		that.update = update;
+
+		configure(configuration);
+
+		return that;
+	};
+</script>
+
+<script>
+	function onDocumentReady(width) {
+		var powerGauge = gauge('#power-gauge', {
+			size: width,
+			clipWidth: width,
+			clipHeight: width,
+			ringWidth: 60,
+			maxValue: 100, //Changes maxiumum scale value
+			transitionMs: 4000,
+		});
+		powerGauge.render();
+
+		function updateReadings() {
+			// just pump in random data here...
+			powerGauge.update(Math.random() * 10);
+		}
+
+		// every few seconds update reading values
+		updateReadings();
+		setInterval(function() {
+			updateReadings();
+		}, 5 * 1000);
+	}
+
+	if (!window.isLoaded) {
+		window.addEventListener("load", function() {
+			var width = document.getElementById("power-gauge").getBoundingClientRect().width
+			d3.select("#power-gauge").selectAll("*").remove()
+			onDocumentReady(width*0.9);
+		}, false);
+		window.addEventListener("resize", function() {
+			var width = document.getElementById("power-gauge").getBoundingClientRect().width
+			d3.select("#power-gauge").selectAll("*").remove()
+			onDocumentReady(width*0.9);
+		}, false);
+	}
+	else {
+		var width = document.getElementById("power-gauge").getBoundingClientRect().width
+		onDocumentReady(width*0.9);
+	}
+</script>
+
 
 {%endblock%}
