@@ -362,8 +362,8 @@ def delete():
                             
      
                  
-@app.route("/calculateincome")
-def calculate():
+"""@app.route("/calculate")
+def calculateincome():
     collection = mongo.db.income
     #userdata = collection.find_one({'username': session['username']})
     userdata = collection.find({'username': session['username']})
@@ -374,7 +374,47 @@ def calculate():
         timeperiod = entry['timeperiod']
         isContinuous = entry['isContinuous']
         value += model.incomecalculate(amount, frequency, timeperiod, isContinuous)
-        return str(value)
+    print(value)
+    return str(value)"""
+
+@app.route("/calculate")
+def calculateexpenses():
+    collection1 = mongo.db.expenses
+    #userdata = collection.find_one({'username': session['username']})
+    userdata1 = collection1.find({'username': session['username']})
+    value1 = 0
+    for entry in userdata1:
+        frequency = int(entry['frequency'])
+        amount = float(entry['amount'])
+        timeperiod = entry['timeperiod']
+        isContinuous = entry['isContinuous']
+        value1 += model.expensescalculate(amount, frequency, timeperiod, isContinuous)
+    print(value1)
+    return str(value1)
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     
     """    

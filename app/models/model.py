@@ -24,7 +24,7 @@ def weekly(username):
 print(weekly('bubbly_britni'))
 
 """
-def incomecalculate(amount,frequency, timeperiod, isContinuous):
+"""def incomecalculate(amount,frequency, timeperiod, isContinuous):
     income = 0.0
     if isContinuous == 'True':
         if timeperiod == 'day':
@@ -35,9 +35,24 @@ def incomecalculate(amount,frequency, timeperiod, isContinuous):
             income += amount * float(12/frequency)
     else:
         income += amount
-    print (income)
+    #print (income)
     #return str(income)
-    return income 
+    return income """
         
+        
+def expensescalculate(amount,frequency, timeperiod, isContinuous):
+    expenses = 0.0
+    if isContinuous == 'True':
+        if timeperiod == 'day':
+            expenses += amount * float(365/frequency)
+        elif timeperiod == 'week':
+            expenses += amount * float(52/frequency)
+        elif timeperiod == 'month':
+            expenses += amount * float(12/frequency)
+    else:
+        expenses += amount
+    #print (income)
+    #return str(income)
+    return expenses  
         
         

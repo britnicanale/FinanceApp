@@ -26,7 +26,6 @@
       <legend class="col-form-label col-sm-4 pt-0">Frequency</legend>
       <div class="col-sm-8">
         <div class="form-check">
-          <p>Every</p>
           <input class="form-check-input" type="radio" name="isContinuous" id="temporary" value=False checked>
           <label class="form-check-label" for="temporary">
             Temporary
@@ -42,16 +41,16 @@
     </div>
   </fieldset>
   <div class="form-group row">
-    <label for="amount" class="col-sm-4 col-form-label">Frequency</label>
+    <label for="amount" class="col-sm-4 col-form-label">Frequency Every</label>
     <div class="col-sm-8 row">
       <div class="col-sm-6">
         <input name = "frequency" type="number" step="1" class="form-control" id="frequency" placeholder="0.00" min="1">
       </div>
       <div class="col-sm-4">
         <select name="timeperiod">
-        <option value = "day">Days</option>
-        <option value = "week">Weeks</option>
-        <option value = "month">Months</option>
+        <option value = "day">Day</option>
+        <option value = "week">Week</option>
+        <option value = "month">Month</option>
       </select>
       </div>
     </div>
@@ -63,6 +62,5 @@
   </div>
 </form>
 
-
-<a href = "/calculateincome"> Test </a>
+<a href = "/calculate"> Calculate </a>
 {%endblock%}

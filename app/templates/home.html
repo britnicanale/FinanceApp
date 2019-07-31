@@ -32,9 +32,9 @@
 				You've made
 				<h3>$ <b id = "income">10000</b></h3>
 				You've spent
-				<h3>$<b id = "expense">10000</b></h3>
+				<h3>$<b id = "expense">15000</b></h3>
 				You have
-				<h3>$<b id = "save">0</b></h3>
+				<h3>$<b id = "save">-5000</b></h3>
 			</div>
 			<div class="card-footer">
 				<a class="nav-link" id="nav-link" href="/itemlist" style="color:blue">Take a look at all of your income and expenses!</a>
@@ -68,8 +68,8 @@
 			pointerTailLength: 5,
 			pointerHeadLengthPercent: 0.9,
 
-			minValue: -100,
-			maxValue: 100,
+			minValue: -1 * parseInt(d3.select("#income").html()),
+			maxValue: parseInt(d3.select("#income").html()),
 
 			minAngle: -90,
 			maxAngle: 90,
@@ -182,8 +182,6 @@
 				})
 				.text(config.labelFormat);
 				var labels = d3.selectAll("text")['_groups'][0]
-				console.log(labels)
-				console.log("WHAT:S UP")
 				for(i = 0; i < labels.length; i++){
 					if(labels[i].innerHTML.charAt(0) == "-"){
 						labels[i].innerHTML = "-$" + labels[i].innerHTML.substring(1,labels[i].innerHTML.length)
@@ -206,8 +204,8 @@
 
 			pointer = pg.append('path')
 				.attr('d', pointerLine /*function(d) { return pointerLine(d) +'Z';}*/ )
-				.attr('transform', 'rotate(' + 0 + ')');
-
+				.attr('transform', 'rotate(' + (parseInt(d3.select("#save").html()) * (90/parseInt(d3.select("#income").html()))) + ')');
+			console.log(parseInt(d3.select("#save").html()) * (90/parseInt(d3.select("#income").html())))
 			update(newValue === undefined ? 0 : newValue);
 		}
 		that.render = render;
@@ -238,7 +236,7 @@
 			clipWidth: width,
 			clipHeight: width,
 			ringWidth: 60,
-			maxValue: 100, //Changes maxiumum scale value
+			maxValue: parseInt(d3.select("#income").html()), //Changes maxiumum scale value
 			transitionMs: 4000,
 		});
 		powerGauge.render();
