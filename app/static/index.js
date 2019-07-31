@@ -492,7 +492,7 @@
     
     //COOL FLOWY THIKNG #3
     
-loadLiquidFillGauge("fillgauge1", 10);
+loadLiquidFillGauge("fillgauge2", 10);
 
 
 function liquidFillGaugeDefaultSettings() {
@@ -520,9 +520,9 @@ function liquidFillGaugeDefaultSettings() {
     };
 }
 
+ 
 function loadLiquidFillGauge(elementId, value, config) {
     if (config == null) config = liquidFillGaugeDefaultSettings();
-
     var gauge = d3.select("#" + elementId);
     console.log(gauge)
     var radius = Math.min(parseInt(gauge.style("width")), parseInt(gauge.style("height"))) / 2;
@@ -678,6 +678,9 @@ function loadLiquidFillGauge(elementId, value, config) {
             .duration(config.waveRiseTime)
             .tween("text", textTween);
     }
+    // function translate() {
+    //         wave.attr('transform', 'translate(1,0)');
+    //     }; // This transform is necessary to get the clip wave positioned correctly when waveRise=true and waveAnimate=false. The wave will not position correctly without this, but it's not clear why this is actually necessary.
 
     // Make the wave rise. wave and waveGroup are separate so that horizontal and vertical movement can be controlled independently.
     var waveGroupXPosition = fillCircleMargin + fillCircleRadius * 2 - waveClipWidth;
@@ -686,9 +689,7 @@ function loadLiquidFillGauge(elementId, value, config) {
             .transition()
             .duration(config.waveRiseTime)
             .attr('transform', 'translate(' + waveGroupXPosition + ',' + waveRiseScale(fillPercent) + ')')
-            .each("start", function () {
-            wave.attr('transform', 'translate(1,0)');
-        }); // This transform is necessary to get the clip wave positioned correctly when waveRise=true and waveAnimate=false. The wave will not position correctly without this, but it's not clear why this is actually necessary.
+            .each("start",translate)
     } else {
         waveGroup.attr('transform', 'translate(' + waveGroupXPosition + ',' + waveRiseScale(fillPercent) + ')');
     }
