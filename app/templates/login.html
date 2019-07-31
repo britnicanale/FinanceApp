@@ -1,8 +1,12 @@
 {%extends "base.html"%} {% block body%}
 <div class="row justify-content-center" style = "width:100%">
   <div class = "col-sm-12 col-md-8 col-lg-6">
-  
-  <h1 style = "text-align:center">Login to your balance Account</h1><br>
+  <div class ="card text-center">
+    <div class="card-header" style = "background-color:#01394B">
+      <img src="static/balance.png" height=100>
+    </div>
+    <div class = "card-body">
+  <h1 style = "text-align:center">Login</h1><br>
   <!--<div class = "col">-->
   <form class="needs-validation" method="POST" action="/" novalidate>
     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
@@ -16,12 +20,14 @@
       </div>
     </div>
     <br> <br>
-    <a href="/register">Do you have an account yet? Sign up today!</a>
+    Don't have an account yet? <a href="/register">Sign up!</a>
     <br> <br>
     <button type="submit" class="btn btn-primary">Login</button>
 
   </form>
+  </div>
   <!--</div>-->
+  </div>
   </div>
 </div>
 {%endblock%}
