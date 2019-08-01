@@ -194,12 +194,22 @@ def home():
             session["username"] = un
             first = user[0]['first']
             flash("You have successfully logged in")
-            return render_template("home.html", first = first)
+            income = monthlyIncome()
+            savings = monthly()
+            expenses = float(income) -float(savings)
+            expenses = round(expenses,2)
+            print(savings)
+            return render_template("home.html", first = first, income = income, savings = savings, expenses = expenses)
         flash("Your Credentials Are Incorrect")
         return redirect(url_for("login"))  
     first = users.find({'userName': session['username']
     })[0]['first']
-    return render_template("home.html", first = first)
+    income = monthlyIncome()
+    savings = monthly()
+    expenses = float(income) -float(savings)
+    expenses = round(expenses,2)
+    print(savings)
+    return render_template("home.html", first = first, income = income, savings = savings, expenses = expenses)
     
     """
     #flash("HELLO WHAT'S GOING ON")
@@ -283,7 +293,6 @@ def expense():
 
 @app.route('/addexpense/execute', methods = ['GET', 'POST'])
 def expenseexecute():
-    expense = 0
     if "username" not in session:
         return redirect(url_for("login"))
     if request.method == 'GET':
@@ -303,7 +312,6 @@ def expenseexecute():
     
 @app.route('/addincome/execute', methods = ['GET', 'POST'])
 def incomeexecute():
-    income = 0
     if "username" not in session:
         return redirect(url_for("login"))
     if request.method == 'GET':
@@ -344,39 +352,195 @@ def items():
     #print(income)
     return render_template("itemlist.html", income = income, expenses = expenses)
 
-@app.route("/delete", methods = ["GET", "POST"])
+@app.route("/delete", methods = ["GET"])
 def delete():
     if "username" not in session:
         flash("You are not logged in")
         return redirect(url_for("login"))
-    if request.method == "GET":
-        flash("This method is not allowed")
-        return redirect(url_for("home"))
-    if request.form["type"] == "expenses":
+    # if request.method == "GET":
+    #     flash("This method is not allowed")
+    #     return redirect(url_for("home"))
+    if request.args["type"] == "expenses":
         expenses = mongo.db.expenses
-        expenses.find_one_and_delete({"_id":ObjectId(request.form["id"])})
+        expenses.find_one_and_delete({"_id":ObjectId(request.args["id"])})
     else:
         income = mongo.db.income
-        income.find_one_and_delete({"_id":ObjectId(request.form["id"])})
+        income.find_one_and_delete({"_id":ObjectId(request.args["id"])})
     return redirect(url_for("items"))
-                            
-     
-                 
-"""@app.route("/calculate")
-def calculateincome():
+                           
+@app.route("/account", methods = ["GET", "POST"])    
+def account():
+    if "username" not in session:
+        return redirect(url_for("login"))
+    collection = mongo.db.users
+    user = list(collection.find({"userName":session["username"]}))[0]
+    print(user)
+    return render_template("account.html", first = user['first'], last = user['last'], userName = user['userName'], password = user['password'], email = user['email'], dob = user['dob'])               
+
+
+def yearly():
     collection = mongo.db.income
     #userdata = collection.find_one({'username': session['username']})
     userdata = collection.find({'username': session['username']})
     value = 0
     for entry in userdata:
-        frequency = int(entry['frequency'])
+        if entry['isContinuous'] == 'True':
+            frequency = int(entry['frequency'])
+            timeperiod = entry['timeperiod']
+        else:
+            frequency = 0
+            timeperiod = ''
         amount = float(entry['amount'])
-        timeperiod = entry['timeperiod']
         isContinuous = entry['isContinuous']
-        value += model.incomecalculate(amount, frequency, timeperiod, isContinuous)
-    print(value)
-    return str(value)"""
+        value += model.monthlyincome(amount, frequency, timeperiod, isContinuous)
+    
+    collection1 = mongo.db.expenses
+    userdata1 = collection1.find({'username': session['username']})
+    value1 = 0
+    for entry in userdata1:
+        if entry['isContinuous'] == 'True':
+            frequency = int(entry['frequency'])
+            timeperiod = entry['timeperiod']
+        else:
+            frequency = 0
+            timeperiod = ''
+        amount = float(entry['amount'])
+        isContinuous = entry['isContinuous']
+        value1 += model.monthlyincome(amount, frequency, timeperiod, isContinuous)
+    balance = value - value1 
+    balance = round(balance,2)
+    return str(balance)
+    
+    
+def yearlyIncome():
+    collection = mongo.db.income
+    #userdata = collection.find_one({'username': session['username']})
+    userdata = collection.find({'username': session['username']})
+    value = 0
+    for entry in userdata:
+        if entry['isContinuous'] == 'True':
+            frequency = int(entry['frequency'])
+            timeperiod = entry['timeperiod']
+        else:
+            frequency = 0
+            timeperiod = ''
+        amount = float(entry['amount'])
+        isContinuous = entry['isContinuous']
+        value += model.monthlyincome(amount, frequency, timeperiod, isContinuous)
+    value = round(value,2)
+    return str(value)
+    
+    
+def monthly():
+    collection = mongo.db.income
+    userdata = collection.find({'username': session['username']})
+    value = 0
+    for entry in userdata:
+        if entry['isContinuous'] == 'True':
+            frequency = int(entry['frequency'])
+            timeperiod = entry['timeperiod']
+        else:
+            frequency = 0
+            timeperiod = ''
+        amount = float(entry['amount'])
+        isContinuous = entry['isContinuous']
+        value += model.monthlyincome(amount, frequency, timeperiod, isContinuous)
+     
+    collection1 = mongo.db.expenses
+    userdata1 = collection1.find({'username': session['username']})
+    value1 = 0
+    for entry in userdata1:
+        if entry['isContinuous'] == 'True':
+            frequency = int(entry['frequency'])
+            timeperiod = entry['timeperiod']
+        else:
+            frequency = 0
+            timeperiod = ''
+        amount = float(entry['amount'])
+        isContinuous = entry['isContinuous']
+        value1 += model.monthlyincome(amount, frequency, timeperiod, isContinuous)
+    balance = value - value1 
+    balance = round(balance,2)
+    return str(balance)
+    
+    
+    
+    
+    
+def monthlyIncome():
+    collection = mongo.db.income
+    userdata = collection.find({'username': session['username']})
+    value = 0
+    for entry in userdata:
+        if entry['isContinuous'] == 'True':
+            frequency = int(entry['frequency'])
+            timeperiod = entry['timeperiod']
+        else:
+            frequency = 0
+            timeperiod = ''
+        amount = float(entry['amount'])
+        isContinuous = entry['isContinuous']
+        value += model.monthlyincome(amount, frequency, timeperiod, isContinuous)
+    value = round(value,2)        
+    return str(value)
+    
+def weekly():
+    collection = mongo.db.income
+    userdata = collection.find({'username': session['username']})
+    value = 0
+    for entry in userdata:
+        if entry['isContinuous'] == 'True':
+            frequency = int(entry['frequency'])
+            timeperiod = entry['timeperiod']
+        else:
+            frequency = 0
+            timeperiod = ''
+        amount = float(entry['amount'])
+        isContinuous = entry['isContinuous']
+        value += model.monthlyincome(amount, frequency, timeperiod, isContinuous)
+     
+    collection1 = mongo.db.expenses
+    userdata1 = collection1.find({'username': session['username']})
+    value1 = 0
+    for entry in userdata1:
+        if entry['isContinuous'] == 'True':
+            frequency = int(entry['frequency'])
+            timeperiod = entry['timeperiod']
+        else:
+            frequency = 0
+            timeperiod = ''
+        amount = float(entry['amount'])
+        isContinuous = entry['isContinuous']
+        value1 += model.monthlyincome(amount, frequency, timeperiod, isContinuous)
+    balance = value - value1 
+    balance = round(balance,2)
+    return str(balance)
 
+    
+def weeklyincome():
+    collection = mongo.db.income
+    userdata = collection.find({'username': session['username']})
+    value = 0
+    for entry in userdata:
+        if entry['isContinuous'] == 'True':
+            frequency = int(entry['frequency'])
+            timeperiod = entry['timeperiod']
+        else:
+            frequency = 0
+            timeperiod = ''
+        amount = float(entry['amount'])
+        isContinuous = entry['isContinuous']
+        value += model.monthlyincome(amount, frequency, timeperiod, isContinuous)
+    value = round(value,2)
+    return str(value)
+
+
+
+
+
+
+
+"""
 @app.route("/calculate")
 def calculateexpenses():
     collection1 = mongo.db.expenses
@@ -391,33 +555,11 @@ def calculateexpenses():
         value1 += model.expensescalculate(amount, frequency, timeperiod, isContinuous)
     print(value1)
     return str(value1)
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+""" 
 
 
     
-    """    
+"""    
     frequency = int(userdata['frequency'])
     amount = float(userdata['amount'])
     timeperiod = userdata['timeperiod']

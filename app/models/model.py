@@ -24,35 +24,98 @@ def weekly(username):
 print(weekly('bubbly_britni'))
 
 """
-"""def incomecalculate(amount,frequency, timeperiod, isContinuous):
+def yearlyincome(amount,frequency, timeperiod, isContinuous):
     income = 0.0
     if isContinuous == 'True':
-        if timeperiod == 'day':
+        if frequency > 0:
+          if timeperiod == 'day':
             income += amount * float(365/frequency)
-        elif timeperiod == 'week':
+          elif timeperiod == 'week':
             income += amount * float(52/frequency)
-        elif timeperiod == 'month':
+          elif timeperiod == 'month':
             income += amount * float(12/frequency)
     else:
         income += amount
     #print (income)
     #return str(income)
-    return income """
+    return income 
         
         
-def expensescalculate(amount,frequency, timeperiod, isContinuous):
+def yearlyexpenses(amount,frequency, timeperiod, isContinuous):
     expenses = 0.0
     if isContinuous == 'True':
-        if timeperiod == 'day':
-            expenses += amount * float(365/frequency)
-        elif timeperiod == 'week':
-            expenses += amount * float(52/frequency)
-        elif timeperiod == 'month':
-            expenses += amount * float(12/frequency)
+        if frequency > 0:
+            if timeperiod == 'day':
+             expenses += amount * float(365/frequency)
+            elif timeperiod == 'week':
+             expenses += amount * float(52/frequency)
+            elif timeperiod == 'month':
+             expenses += amount * float(12/frequency)
     else:
         expenses += amount
-    #print (income)
-    #return str(income)
     return expenses  
         
+def monthlyincome(amount, frequency, timeperiod, isContinuous):
+    income = 0.0
+    if isContinuous == 'True':
+        if frequency> 0:
+         if timeperiod == 'day':
+             income += amount * float(30/frequency)
+         elif timeperiod == 'week':
+             income += amount * float(4/frequency)
+         elif timeperiod == 'month':
+             income += amount * float(1/frequency)
+    else:
+        income += amount
+    return income 
+        
+        
+def monthlyexpenses(amount,frequency, timeperiod, isContinuous):
+    expenses = 0.0
+    if isContinuous == 'True':
+        if frequency > 0:
+         if timeperiod == 'day':
+             expenses += amount * float(30/frequency)
+         elif timeperiod == 'week':
+             expenses += amount * float(4/frequency)
+         elif timeperiod == 'month':
+             expenses += amount * float(1/frequency)
+    else:
+        expenses += amount
+    return expenses  
+    
+    
+    
+def weeklyincome(amount, frequency, timeperiod, isContinuous):
+    income = 0.0
+    if isContinuous == 'True':
+        if frequency > 0:
+         if timeperiod == 'day':
+             income += amount * float(7/frequency)
+         elif timeperiod == 'week':
+             income += amount * float(1/frequency)
+         elif timeperiod == 'month':
+             income += amount * float(1/(4* frequency))
+    else:
+        income += amount
+    return income 
+
+
+def weeklyexpenses(amount,frequency, timeperiod, isContinuous):
+    expenses = 0.0
+    if isContinuous == 'True':
+        if frequency > 0:
+         if timeperiod == 'day':
+             expenses += amount * float(7/frequency)
+         elif timeperiod == 'week':
+             expenses += amount * float(1/frequency)
+         elif timeperiod == 'month':
+             expenses += amount * float(1/(4 *frequency))
+    else:
+        expenses += amount
+    return expenses  
+    
+
+        
+
         
