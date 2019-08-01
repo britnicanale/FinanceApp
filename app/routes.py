@@ -187,29 +187,59 @@ def home():
         un = request.form["uname"]                
         pw = request.form["pword"]
         user = list(users.find({'userName' : un}))
-        print(users)
-        print(un)
-        print(pw)
+        #print(users)
+        #print(un)
+        #print(pw)
         if len(user)==1 and user[0]['password'] == pw:               
             session["username"] = un
             first = user[0]['first']
             flash("You have successfully logged in")
-            income = monthlyIncome()
-            savings = monthly()
+            if request.method == "GET" and "time" in request.args:
+                if request.args['time'] == "monthly":
+                    income = monthlyIncome()
+                    savings = monthly()
+                    time = "monthly"
+                if request.args['time'] == "yearly":
+                    income = yearlyIncome()
+                    savings = yearly()
+                    time = "yearly"
+                if request.args['time'] == "weekly":
+                    income = weeklyIncome()
+                    savings = weekly()
+                    time = "weekly"
+            else:
+                income = monthlyIncome()
+                savings = monthly()
+                time = "monthly"
             expenses = float(income) -float(savings)
             expenses = round(expenses,2)
-            print(savings)
-            return render_template("home.html", first = first, income = income, savings = savings, expenses = expenses)
+            #print(savings)
+            return render_template("home.html", first = first, income = income, savings = savings, expenses = expenses, time = time)
         flash("Your Credentials Are Incorrect")
         return redirect(url_for("login"))  
-    first = users.find({'userName': session['username']
-    })[0]['first']
-    income = monthlyIncome()
-    savings = monthly()
+    if request.method == "GET" and "time" in request.args:
+        if request.args['time'] == "monthly":
+            income = monthlyIncome()
+            savings = monthly()
+            time = "monthly"
+        if request.args['time'] == "yearly":
+            income = yearlyIncome()
+            savings = yearly()
+            time = "yearly"
+        if request.args['time'] == "weekly":
+            income = weeklyIncome()
+            savings = weekly()
+            time = "weekly"
+    else:
+        income = monthlyIncome()
+        savings = monthly()
+        time = "monthly"
     expenses = float(income) -float(savings)
     expenses = round(expenses,2)
-    print(savings)
-    return render_template("home.html", first = first, income = income, savings = savings, expenses = expenses)
+    first = users.find({'userName': session['username']
+    })[0]['first']
+    #print(savings)
+    return render_template("home.html", first = first, income = income, savings = savings, expenses = expenses, time = time)
     
     """
     #flash("HELLO WHAT'S GOING ON")
@@ -352,20 +382,20 @@ def items():
     #print(income)
     return render_template("itemlist.html", income = income, expenses = expenses)
 
-@app.route("/delete", methods = ["GET"])
+@app.route("/delete", methods = ["GET", "POST"])
 def delete():
     if "username" not in session:
         flash("You are not logged in")
         return redirect(url_for("login"))
-    # if request.method == "GET":
-    #     flash("This method is not allowed")
-    #     return redirect(url_for("home"))
-    if request.args["type"] == "expenses":
+    if request.method == "GET":
+        flash("This method is not allowed")
+        return redirect(url_for("home"))
+    if request.form["type"] == "expenses":
         expenses = mongo.db.expenses
-        expenses.find_one_and_delete({"_id":ObjectId(request.args["id"])})
+        expenses.find_one_and_delete({"_id":ObjectId(request.form["id"])})
     else:
         income = mongo.db.income
-        income.find_one_and_delete({"_id":ObjectId(request.args["id"])})
+        income.find_one_and_delete({"_id":ObjectId(request.form["id"])})
     return redirect(url_for("items"))
                            
 @app.route("/account", methods = ["GET", "POST"])    
@@ -374,7 +404,7 @@ def account():
         return redirect(url_for("login"))
     collection = mongo.db.users
     user = list(collection.find({"userName":session["username"]}))[0]
-    print(user)
+    #print(user)
     return render_template("account.html", first = user['first'], last = user['last'], userName = user['userName'], password = user['password'], email = user['email'], dob = user['dob'])               
 
 
@@ -392,7 +422,7 @@ def yearly():
             timeperiod = ''
         amount = float(entry['amount'])
         isContinuous = entry['isContinuous']
-        value += model.monthlyincome(amount, frequency, timeperiod, isContinuous)
+        value += model.yearlyincome(amount, frequency, timeperiod, isContinuous)
     
     collection1 = mongo.db.expenses
     userdata1 = collection1.find({'username': session['username']})
@@ -406,7 +436,7 @@ def yearly():
             timeperiod = ''
         amount = float(entry['amount'])
         isContinuous = entry['isContinuous']
-        value1 += model.monthlyincome(amount, frequency, timeperiod, isContinuous)
+        value1 += model.yearlyincome(amount, frequency, timeperiod, isContinuous)
     balance = value - value1 
     balance = round(balance,2)
     return str(balance)
@@ -426,7 +456,7 @@ def yearlyIncome():
             timeperiod = ''
         amount = float(entry['amount'])
         isContinuous = entry['isContinuous']
-        value += model.monthlyincome(amount, frequency, timeperiod, isContinuous)
+        value += model.yearlyincome(amount, frequency, timeperiod, isContinuous)
     value = round(value,2)
     return str(value)
     
@@ -497,7 +527,7 @@ def weekly():
             timeperiod = ''
         amount = float(entry['amount'])
         isContinuous = entry['isContinuous']
-        value += model.monthlyincome(amount, frequency, timeperiod, isContinuous)
+        value += model.weeklyincome(amount, frequency, timeperiod, isContinuous)
      
     collection1 = mongo.db.expenses
     userdata1 = collection1.find({'username': session['username']})
@@ -511,13 +541,13 @@ def weekly():
             timeperiod = ''
         amount = float(entry['amount'])
         isContinuous = entry['isContinuous']
-        value1 += model.monthlyincome(amount, frequency, timeperiod, isContinuous)
+        value1 += model.weeklyincome(amount, frequency, timeperiod, isContinuous)
     balance = value - value1 
     balance = round(balance,2)
     return str(balance)
 
     
-def weeklyincome():
+def weeklyIncome():
     collection = mongo.db.income
     userdata = collection.find({'username': session['username']})
     value = 0
@@ -530,7 +560,7 @@ def weeklyincome():
             timeperiod = ''
         amount = float(entry['amount'])
         isContinuous = entry['isContinuous']
-        value += model.monthlyincome(amount, frequency, timeperiod, isContinuous)
+        value += model.weeklyincome(amount, frequency, timeperiod, isContinuous)
     value = round(value,2)
     return str(value)
 

@@ -1,4 +1,4 @@
-{%extends "home.html"%} {% block body%}
+{%extends "home.html"%} {%block title%} Your Ledger {%endblock%} {% block body%}
 
 <div class="col-12">
   <h1 style="text-align:center">Items List</h1>
@@ -26,45 +26,50 @@
             <th scope="row">{{source['source']}}</th>
             <td>{{source['date']}}</td>
             <td>${{source['amount']}}</td>
-            {%if source['isContinuous']%}
-            <td>{{source['frequency']}} every {{source['timeperiod']}}</td>
+            {%if source['isContinuous'] == 'True'%}
+            {%if source['frequency']|int > 1 %}
+            <td> every {{source['frequency']}} {{source['timeperiod']}}s</td>
+            {%endif%}
+            {%if source['frequency']|int == 1%}
+            <td> every {{source['timeperiod']}} </td>
+            {%endif%}
             {%else%}
             <td> N/A </td>
             {%endif%}
             <td>
-              <button class="btn btn-danger" id="delete" data-toggle="modal" name="myModal{{source['_id']}}" data-target="#delete">Delete</button>
+              <!--<button class="btn btn-danger" id="delete{{source['_id']}}" data-toggle="modal" name="myModal{{source['_id']}}" data-target="#delete">Delete</button>-->
 
               <!--THIS DOES WORK-->
-              <div class="modal" tabindex="-1" id="myModal{{source['_id']}}" role="dialog">
-                <div class="modal-dialog" role="document">
-                  <div class="modal-content" style = "color:black">
-                    <div class="modal-header">
-                      <h5 class="modal-title">Delete</h5>
-                      <button type="button" class="close" data-dismiss="modal" id="close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div class="modal-body" >
-                      Are you sure you want to delete this item? This action is irreversable.
-                    </div>
-                    <div class="modal-footer">
-                      <form action="/delete" method="POST">
-                        <input type="hidden" name="id" value={{source[ '_id']}}>
-                        <input type="hidden" name="type" value="income">
-                        <a  role ="button" type="button" class="btn btn-danger" name="delete" href="/delete?id={{source['_id']}}&type=income">Delete</a>
-                      </form>
-                      <form action="/itemlist">
-                        <button type="button" class="btn btn-secondary" id="cancel">Cancel</button>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!--<form action="/delete" method="POST">-->
-              <!--  <input type="hidden" name="id" value={{source[ '_id']}}>-->
-              <!--  <input type = "hidden" name = "type" value = "income">-->
-              <!--  <button type="submit" class="btn btn-danger">Delete</button>-->
-              <!--</form>-->
+              <!--<div class="modal" tabindex="-1" id="myModal{{source['_id']}}" role="dialog">-->
+              <!--  <div class="modal-dialog" role="document">-->
+              <!--    <div class="modal-content" style = "color:black">-->
+              <!--      <div class="modal-header">-->
+              <!--        <h5 class="modal-title">Delete</h5>-->
+              <!--        <button type="button" class="close" data-dismiss="modal" id="close">-->
+              <!--          <span aria-hidden="true">&times;</span>-->
+              <!--        </button>-->
+              <!--      </div>-->
+              <!--      <div class="modal-body" >-->
+              <!--        Are you sure you want to delete this item? This action is irreversable.-->
+              <!--      </div>-->
+              <!--      <div class="modal-footer">-->
+              <!--        <form action="/delete" method="POST">-->
+              <!--          <input type="hidden" name="id" value={{source[ '_id']}}>-->
+              <!--          <input type="hidden" name="type" value="income">-->
+              <!--          <a  role ="button" type="button" class="btn btn-danger" name="delete" href="/delete?id={{source['_id']}}&type=income">Delete</a>-->
+              <!--        </form>-->
+              <!--        <form action="/itemlist">-->
+              <!--          <button type="button" class="btn btn-secondary" id="cancel">Cancel</button>-->
+              <!--        </form>-->
+              <!--      </div>-->
+              <!--    </div>-->
+              <!--  </div>-->
+              <!--</div>-->
+              <form action="/delete" method="POST">
+                <input type="hidden" name="id" value={{source[ '_id']}}>
+                <input type = "hidden" name = "type" value = "income">
+                <button type="submit" class="btn btn-danger">Delete</button>
+              </form>
               
             </td>
           </tr>
@@ -95,41 +100,51 @@
             <th scope="row">{{expense['item']}}</th>
             <td>{{expense['date']}}</td>
             <td>${{expense['amount']}}</td>
-            {%if expense['isContinuous']%}
-            <td>{{expense['frequency']}} every {{expense['timeperiod']}}</td>
+            {%if expense['isContinuous'] == 'True'%}
+            {%if expense['frequency']|int > 1 %}
+            <td> every {{expense['frequency']}} {{expense['timeperiod']}}s</td>
+            {%endif%}
+            {%if expense['frequency']|int == 1%}
+            <td> every {{expense['timeperiod']}} </td>
+            {%endif%}
             {%else%}
             <td> N/A </td>
             {%endif%}
             <td>
+              <form action="/delete" method="POST">
+                <input type="hidden" name="id" value={{expense[ '_id']}}>
+                <input type = "hidden" name = "type" value = "expenses">
+                <button type="submit" class="btn btn-danger">Delete</button>
+              </form>
 
-              <button class="btn btn-danger" id="delete" data-toggle="modal" name = "myModal{{expense['_id']}}" data-target="#delete">Delete</button>
+              <!--<button class="btn btn-danger" id="delete{{expense['_id']}}" data-toggle="modal" name = "myModal{{expense['_id']}}" data-target="#delete">Delete</button>-->
 
               <!--THIS DOES WORK-->
-              <div class="modal" tabindex="-1" id="myModal{{expense['_id']}}" role="dialog">
-                <div class="modal-dialog" role="document">
-                  <div class="modal-content" style = "color:black">
-                    <div class="modal-header">
-                      <h5 class="modal-title">Delete</h5>
-                      <button type="button" class="close" data-dismiss="modal" id="close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div class="modal-body" >
-                      Are you sure you want to delete this item? This action is irreversable.
-                    </div>
-                    <div class="modal-footer">
-                      <form action="/delete" method="POST">
-                        <input type="hidden" name="id" value={{expense[ '_id']}}>
-                        <input type="hidden" name="type" value="income">
-                        <a  role ="button" type="button" class="btn btn-danger" name="delete" href="/delete?id={{expense['_id']}}&type=expenses">Delete</a>
-                      </form>
-                      <form action="/itemlist">
-                        <button type="button" class="btn btn-secondary" id="cancel">Cancel</button>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <!--<div class="modal" tabindex="-1" id="myModal{{expense['_id']}}" role="dialog">-->
+              <!--  <div class="modal-dialog" role="document">-->
+              <!--    <div class="modal-content" style = "color:black">-->
+              <!--      <div class="modal-header">-->
+              <!--        <h5 class="modal-title">Delete</h5>-->
+              <!--        <button type="button" class="close" data-dismiss="modal" id="close">-->
+              <!--          <span aria-hidden="true">&times;</span>-->
+              <!--        </button>-->
+              <!--      </div>-->
+              <!--      <div class="modal-body" >-->
+              <!--        Are you sure you want to delete this item? This action is irreversable.-->
+              <!--      </div>-->
+              <!--      <div class="modal-footer">-->
+              <!--        <form action="/delete" method="POST">-->
+              <!--          <input type="hidden" name="id" value={{expense[ '_id']}}>-->
+              <!--          <input type="hidden" name="type" value="income">-->
+              <!--          <a  role ="button" type="button" class="btn btn-danger" name="delete" href="/delete?id={{expense['_id']}}&type=expenses">Delete</a>-->
+              <!--        </form>-->
+              <!--        <form action="/itemlist">-->
+              <!--          <button type="button" class="btn btn-secondary" id="cancel">Cancel</button>-->
+              <!--        </form>-->
+              <!--      </div>-->
+              <!--    </div>-->
+              <!--  </div>-->
+              <!--</div>-->
             </td>
           </tr>
           {%endfor%}
@@ -137,11 +152,48 @@
       </table>
     </div>
   </div>
+  <!--<input type = "hidden" id = "expenses" name = "data" value={{expenses}}>-->
+  <!--<input type = "hidden" id = "income" name = "data" value={{income}}>-->
 </div>
 <script>
+var expenses = JSON.parse("{{expenses}}")
 
+var income = "{{income}}"
+for(i = 0; i < expenses.length;i++){
                 // Get the button that opens the modal
-                var del = document.getElementById("delete");
+                console.log("printing")
+                console.log(i)
+                console.log(expenses[i])
+                var del = document.getElementById("delete".concat(expenses[i]['_id']));
+                
+                // Get the modal
+                console.log("printing")
+                var modal = document.getElementById(del.getAttribute("name"));
+                
+                console.log("printing")
+                var close = document.getElementById("close");
+                var cancel = document.getElementById("cancel");
+
+                // When the user clicks on the button, open the modal
+                del.addEventListener("click", (e) => {
+                  modal.style.display = "block";
+                  console.log(e);
+                });
+
+                close.addEventListener("click", (e) => {
+                  modal.style.display = "none";
+                  console.log(e);
+                });
+                cancel.addEventListener("click", (e) => {
+                  modal.style.display = "none";
+                  console.log(e);
+                });
+}
+for(i = 0; i < income.length;i++){
+                // Get the button that opens the modal
+                
+                var del = document.getElementById("delete" + [income]['_id']);
+                console.log(del)
                 
                 // Get the modal
                 var modal = document.getElementById(del.getAttribute("name"));
@@ -163,6 +215,8 @@
                   modal.style.display = "none";
                   console.log(e);
                 });
+}
               </script>
+              
 
 {%endblock%}

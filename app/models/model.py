@@ -34,6 +34,8 @@ def yearlyincome(amount,frequency, timeperiod, isContinuous):
             income += amount * float(52/frequency)
           elif timeperiod == 'month':
             income += amount * float(12/frequency)
+          elif timeperiod == 'year':
+              income += amount * float(1/frequency)
     else:
         income += amount
     #print (income)
@@ -51,6 +53,8 @@ def yearlyexpenses(amount,frequency, timeperiod, isContinuous):
              expenses += amount * float(52/frequency)
             elif timeperiod == 'month':
              expenses += amount * float(12/frequency)
+            elif timeperiod == 'year':
+             expenses += amount * float(1/frequency)
     else:
         expenses += amount
     return expenses  
@@ -65,6 +69,8 @@ def monthlyincome(amount, frequency, timeperiod, isContinuous):
              income += amount * float(4/frequency)
          elif timeperiod == 'month':
              income += amount * float(1/frequency)
+         elif timeperiod == 'year':
+             income += amount * float(1/(12 * frequency))
     else:
         income += amount
     return income 
@@ -80,6 +86,8 @@ def monthlyexpenses(amount,frequency, timeperiod, isContinuous):
              expenses += amount * float(4/frequency)
          elif timeperiod == 'month':
              expenses += amount * float(1/frequency)
+         elif timeperiod == 'year':
+             expenses += amount * float(1/(12 * frequency))
     else:
         expenses += amount
     return expenses  
@@ -96,6 +104,8 @@ def weeklyincome(amount, frequency, timeperiod, isContinuous):
              income += amount * float(1/frequency)
          elif timeperiod == 'month':
              income += amount * float(1/(4* frequency))
+        elif timeperiod == 'year':
+             income += amount * float(1/(52*frequency))
     else:
         income += amount
     return income 
@@ -111,6 +121,8 @@ def weeklyexpenses(amount,frequency, timeperiod, isContinuous):
              expenses += amount * float(1/frequency)
          elif timeperiod == 'month':
              expenses += amount * float(1/(4 *frequency))
+         elif timeperiod == 'year':
+             expenses += amount * float(1/(52*frequency))
     else:
         expenses += amount
     return expenses  

@@ -20,21 +20,43 @@
 </nav>
 {%endblock%} {%block body%}
 <div class="row justify-content-center" style="width:100%">
-	<h2 style="text-align:center">Welcome {{first}}! Here is your daily snapshot.</h2>
+	<h2 style="text-align:center">Welcome, {{first}}! Here is your daily snapshot.</h2>
 </div>
 <div class="row justify-content-center" style="width:100%">
 	<div class="col-xs-12 col-md-7 align-self-center" style="padding:50px">
 		<div class="card text-center">
+			<div class="Time Form" id="time-form">
+				<form action="/action_page.php">
+					<h4>Select the time period for your financial analysis</h4>
+					<div class="btn-group btn-group-toggle" data-toggle="buttons" style="color:white">
+						<label class="btn btn-secondary" {%if time == "weekly"%}style="background-color:black"{%endif%}>
+							<a  href="/?time=weekly" style="color:white">
+   							 <input type="radio" name="options" id="option2" autocomplete="off"> Weekly
+   							 </a>
+  						</label>
+						<label class="btn btn-secondary" {%if time == "monthly"%}style="background-color:black"{%endif%}>
+							<a  href="/?time=monthly" style="color:white">
+   							 <input type="radio" name="options" id="option3" autocomplete="off"> Monthly
+   							 </a>
+  						</label>
+  						<label class="btn btn-secondary" {%if time == "yearly"%}style="background-color:black"{%endif%}>
+  							<a  href="/?time=yearly" style="color:white">
+   							<input type="radio" name="options" id="option3" autocomplete="off" > Yearly
+   							</a>
+  						</label>
+					</div>
+				</form>
+			</div>
 			<div class="card-header" style="background-color: #01394B">
 				<h3 style="color:white">Summary</h3>
 			</div>
 			<div class="card-body">
 				You've made
-				<h3>$ <b id = "income">{{income}}</b></h3>
+				<h3>$ <b id="income">{{income}}</b></h3>
 				You've spent
-				<h3>$<b id = "expense">{{expenses}}</b></h3>
+				<h3>$<b id="expense">{{expenses}}</b></h3>
 				You have
-				<h3>$<b id = "save">{{savings}}</b></h3>
+				<h3>$<b id="save">{{savings}}</b></h3>
 			</div>
 			<div class="card-footer">
 				<a class="nav-link" id="nav-link" href="/itemlist" style="color:blue">Take a look at all of your income and expenses!</a>
@@ -44,17 +66,28 @@
 
 
 	<div class="col-xs-12 col-md-7 align-self-center">
-		<div class="card text-center"style="width:120%;">
+		<div class="card text-center" style="width:120%;">
 			<div class="card-header" style="background-color: #01394B">
 				<h3 style="color:white">Financial Tracker</h3>
 			</div>
 			<div class="card-body" id="power-gauge">
-				Here is your current status.
+				Here is your current status. 
 			</div>
 		</div>
 	</div>
 </div>
+
 <script>
+
+let saving = parseInt(d3.select("#save").html())
+let income = parseInt(d3.select("#income").html())
+console.log(saving, income)
+
+var max = Math.max(Math.abs(saving), income)
+
+console.log("INNTER HTML")
+console.log(d3.select("#income").html())
+console.log(d3.select("#expense").html())
 	var gauge = function(container, configuration) {
 		var that = {};
 		var config = {
@@ -68,8 +101,8 @@
 			pointerTailLength: 5,
 			pointerHeadLengthPercent: 0.9,
 
-			minValue: -1 * parseInt(d3.select("#income").html()),
-			maxValue: parseInt(d3.select("#income").html()),
+			minValue: -1 * max,
+			maxValue: max,
 
 			minAngle: -90,
 			maxAngle: 90,
@@ -122,7 +155,7 @@
 				.domain([config.minValue, config.maxValue]);
 
 			ticks = scale.ticks(config.majorTicks);
-			console.log(ticks)
+			//console.log(ticks)
 			tickData = d3.range(config.majorTicks).map(function() { return 1 / config.majorTicks; });
 
 			arc = d3.arc()
@@ -181,14 +214,15 @@
 					return 'rotate(' + newAngle + ') translate(0,' + (config.labelInset - r) + ')';
 				})
 				.text(config.labelFormat);
-				var labels = d3.selectAll("text")['_groups'][0]
-				for(i = 0; i < labels.length; i++){
-					if(labels[i].innerHTML.charAt(0) == "-"){
-						labels[i].innerHTML = "-$" + labels[i].innerHTML.substring(1,labels[i].innerHTML.length)
-					}else{
-						labels[i].innerHTML = "$" + labels[i].innerHTML
-					}
+			var labels = d3.selectAll("text")['_groups'][0]
+			for (i = 0; i < labels.length; i++) {
+				if (labels[i].innerHTML.charAt(0) == "-") {
+					labels[i].innerHTML = "-$" + labels[i].innerHTML.substring(1, labels[i].innerHTML.length)
 				}
+				else {
+					labels[i].innerHTML = "$" + labels[i].innerHTML
+				}
+			}
 
 			var lineData = [
 				[config.pointerWidth / 2, 0],
@@ -204,8 +238,8 @@
 
 			pointer = pg.append('path')
 				.attr('d', pointerLine /*function(d) { return pointerLine(d) +'Z';}*/ )
-				.attr('transform', 'rotate(' + (parseInt(d3.select("#save").html()) * (90/parseInt(d3.select("#income").html()))) + ')');
-			console.log(parseInt(d3.select("#save").html()) * (90/parseInt(d3.select("#income").html())))
+				.attr('transform', 'rotate(' + saving * (90 / max) + ')');
+			//console.log(parseInt(d3.select("#save").html()) * (90 / parseInt(d3.select("#income").html())))
 			update(newValue === undefined ? 0 : newValue);
 		}
 		that.render = render;
@@ -236,7 +270,7 @@
 			clipWidth: width,
 			clipHeight: width,
 			ringWidth: 60,
-			maxValue: parseInt(d3.select("#income").html()), //Changes maxiumum scale value
+			maxValue: max, //Changes maxiumum scale value
 			transitionMs: 4000,
 		});
 		powerGauge.render();
@@ -257,19 +291,20 @@
 		window.addEventListener("load", function() {
 			var width = document.getElementById("power-gauge").getBoundingClientRect().width
 			d3.select("#power-gauge").selectAll("*").remove()
-			onDocumentReady(width*0.9);
+			onDocumentReady(width * 0.9);
 		}, false);
 		window.addEventListener("resize", function() {
 			var width = document.getElementById("power-gauge").getBoundingClientRect().width
 			d3.select("#power-gauge").selectAll("*").remove()
-			onDocumentReady(width*0.9);
+			onDocumentReady(width * 0.9);
 		}, false);
 	}
 	else {
 		var width = document.getElementById("power-gauge").getBoundingClientRect().width
-		onDocumentReady(width*0.9);
+		onDocumentReady(width * 0.9);
 	}
 </script>
+
 
 
 {%endblock%}

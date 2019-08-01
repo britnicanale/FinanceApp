@@ -1,4 +1,4 @@
-{%extends "home.html"%} {%block body%}
+{%extends "home.html"%}{%block title%} Account Information {%endblock%} {%block body%}
 <div class="col-sm-12 col-md-12 col-lg-12">
   <h1 style = "text-align:center">Account Info</h1><br>  
 <br>
@@ -12,9 +12,6 @@
 <br>
 <p>Password: &nbsp {{password}} </p>
 <br>
-<form class="needs-validation">
- 
-</form>
 <p>Email: &nbsp {{email}} </p>
 <br>
 <p>Date of Birth: &nbsp {{dob}}</p>

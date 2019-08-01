@@ -1,4 +1,4 @@
-{%extends "home.html"%} {%block body%}
+{%extends "home.html"%}{%block title%} Add Expenses {%endblock%} {%block body%}
 
 
 <form method="POST" action="/addexpense/execute">
@@ -23,7 +23,7 @@
   </div>
   <fieldset class="form-group">
     <div class="row">
-      <legend class="col-form-label col-sm-4 pt-0">Is Continuous?</legend>
+      <legend class="col-form-label col-sm-4 pt-0">Temporary or Continuous?</legend>
       <div class="col-sm-8">
         <div class="form-check">
           <input class="form-check-input" type="radio" name="isContinuous" id="temporary" value=False checked>
@@ -48,9 +48,10 @@
     </div>
     <div class="col-sm-4">
     <select name = "timeperiod">
-        <option value = "day">Day</option>
-        <option value = "week">Week</option>
-        <option value = "month">Month</option>
+        <option value = "day">Day(s)</option>
+        <option value = "week">Week(s)</option>
+        <option value = "month">Month(s)</option>
+        <option value = "year"> Year(s) </option>
       </select>
       </div>
       </div>
